@@ -6,6 +6,9 @@ import React, { useEffect, useState } from 'react'
 import QuestionsSection from './_components/QuestionsSection';
 import RecordAnswerSection from './_components/RecordAnswerSection';
 
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+
 function StartInterview({params}) {
 
     const [interviewData, setInterviewData] = useState(null)
@@ -46,7 +49,20 @@ function StartInterview({params}) {
                     <div>Loading questions...</div>
                 )}
 
-                <RecordAnswerSection />
+                <RecordAnswerSection 
+                    mockInterviewQuestion={mockInterviewQuestion} 
+                    activeQuestionIndex={activeQuestionIndex} 
+                    interviewData={interviewData}
+                />
+            </div>
+            <div className='flex justify-end gap-6'>
+                {activeQuestionIndex>0&&<Button onClick={()=>setActiveQuestionIndex(activeQuestionIndex-1)}>上一题</Button>}
+                {activeQuestionIndex!=mockInterviewQuestion?.length -1 && <Button onClick={()=>setActiveQuestionIndex(activeQuestionIndex+1)}>下一题</Button>}
+                {activeQuestionIndex==mockInterviewQuestion?.length -1 && 
+                    <Link href={'/dashboard/interview/'+interviewData?.mockId+"/feedback"}>
+                        <Button>结束面试</Button>
+                    </Link>
+                }
             </div>
         </div>
     )
